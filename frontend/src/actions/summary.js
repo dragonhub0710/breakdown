@@ -38,6 +38,10 @@ export const updateRecordSummarize = (data) => async (dispatch) => {
       type: SUMMARIZED_SUCCESS,
       payload: res.data,
     });
+    dispatch({
+      type: GET_ONE_SUMMARY,
+      payload: { data: res.data.updatedRow },
+    });
   } catch (err) {
     throw err;
   }

@@ -72,13 +72,15 @@ exports.updateSummarize = async (req, res) => {
       { where: { id } }
     );
 
+    const updatedRow = await Summary.findOne({ where: { id } });
+
     const rows = await Summary.findAll({
       where: { userId: req.user.id.toString() },
       order: [["updatedAt", "DESC"]],
     });
 
     await unlinkAsync(filePath);
-    res.status(200).json({ data: rows });
+    res.status(200).json({ data: rows, updatedRow: updatedRow });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ message: "Internal server error" });

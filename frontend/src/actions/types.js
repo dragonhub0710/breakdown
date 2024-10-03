@@ -1,0 +1,9 @@
+export const USER_LOADED = "USER_LOADED";
+export const SIGN_IN = "SIGN_IN";
+export const SIGN_OUT = "SIGN_OUT";
+export const SIGN_UP = "SIGN_UP";
+export const SUMMARIZED_SUCCESS = "SUMMARIZED_SUCCESS";
+export const GET_ALL_SUMMARIES = "GET_ALL_SUMMARIES";
+export const GET_ONE_SUMMARY = "GET_ONE_SUMMARY";
+export const UPDATE_SUMMARY = "UPDATE_SUMMARY";
+export const SELECTED_SUMMARY = "SELECTED_SUMMARY";

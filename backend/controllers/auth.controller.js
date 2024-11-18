@@ -66,7 +66,7 @@ exports.signup = async (req, res) => {
     return res.status(400).json({ message: errors.errors[0].msg });
   }
   try {
-    const { firstname, lastname, email, password } = req.body;
+    const { email, password } = req.body;
     let row = await User.findOne({
       where: { email: email },
     });
@@ -77,8 +77,6 @@ exports.signup = async (req, res) => {
     let bcryptPwd = await bcrypt.hash(password, salt);
 
     const newRow = await User.create({
-      firstname: firstname,
-      lastname: lastname,
       email: email,
       password: bcryptPwd,
     });

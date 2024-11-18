@@ -1,13 +1,13 @@
 import api from "../utils/api";
 import {
   SUMMARIZED_SUCCESS,
-  GET_ALL_SUMMARIES,
-  GET_ONE_SUMMARY,
-  UPDATE_SUMMARY,
-  SELECTED_SUMMARY,
+  GET_SUMMARY,
+  GET_MY_LIST,
+  GET_PUBLIC_LIST,
+  INIT_CURRENT_ITEM,
 } from "./types";
 
-export const recordSummarize = (data) => async (dispatch) => {
+export const summarize = (data) => async (dispatch) => {
   try {
     const res = await api.post("/record", data, {
       headers: {
@@ -18,40 +18,22 @@ export const recordSummarize = (data) => async (dispatch) => {
       type: SUMMARIZED_SUCCESS,
       payload: res.data,
     });
-    dispatch({
-      type: GET_ONE_SUMMARY,
-      payload: { data: res.data.data[0] },
-    });
   } catch (err) {
     throw err;
   }
 };
 
-export const updateRecordSummarize = (data) => async (dispatch) => {
-  try {
-    const res = await api.post("/record/update", data, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    });
-    dispatch({
-      type: SUMMARIZED_SUCCESS,
-      payload: res.data,
-    });
-    dispatch({
-      type: GET_ONE_SUMMARY,
-      payload: { data: res.data.updatedRow },
-    });
-  } catch (err) {
-    throw err;
-  }
+export const initCurrentItem = () => async (dispatch) => {
+  dispatch({
+    type: INIT_CURRENT_ITEM,
+  });
 };
 
-export const getAllSummaries = () => async (dispatch) => {
+export const getMyList = () => async (dispatch) => {
   try {
     const res = await api.get("/summary");
     dispatch({
-      type: GET_ALL_SUMMARIES,
+      type: GET_MY_LIST,
       payload: res.data,
     });
   } catch (err) {
@@ -59,11 +41,23 @@ export const getAllSummaries = () => async (dispatch) => {
   }
 };
 
-export const getOneSummary = (data) => async (dispatch) => {
+export const getPublicList = () => async (dispatch) => {
   try {
-    const res = await api.get(`/summary/${data.id}`);
+    const res = await api.get("/summary/public");
     dispatch({
-      type: GET_ONE_SUMMARY,
+      type: GET_PUBLIC_LIST,
+      payload: res.data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const createNewSummary = (data) => async (dispatch) => {
+  try {
+    const res = await api.post("/summary", data);
+    dispatch({
+      type: GET_SUMMARY,
       payload: res.data,
     });
   } catch (err) {
@@ -73,9 +67,21 @@ export const getOneSummary = (data) => async (dispatch) => {
 
 export const updateSummary = (data) => async (dispatch) => {
   try {
-    const res = await api.post(`/summary/update/${data.id}`, data);
+    const res = await api.put("/summary", data);
     dispatch({
-      type: UPDATE_SUMMARY,
+      type: GET_SUMMARY,
+      payload: res.data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getSummary = (data) => async (dispatch) => {
+  try {
+    const res = await api.get(`/summary/${data.id}`);
+    dispatch({
+      type: GET_SUMMARY,
       payload: res.data,
     });
   } catch (err) {
@@ -87,19 +93,8 @@ export const removeSummary = (data) => async (dispatch) => {
   try {
     const res = await api.delete(`/summary/${data.id}`);
     dispatch({
-      type: UPDATE_SUMMARY,
+      type: GET_MY_LIST,
       payload: res.data,
-    });
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const selectedSummary = (data) => async (dispatch) => {
-  try {
-    dispatch({
-      type: SELECTED_SUMMARY,
-      payload: data,
     });
   } catch (err) {
     throw err;

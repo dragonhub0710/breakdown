@@ -1,36 +1,49 @@
 import {
   SUMMARIZED_SUCCESS,
-  GET_ALL_SUMMARIES,
-  GET_ONE_SUMMARY,
-  UPDATE_SUMMARY,
-  SELECTED_SUMMARY,
+  GET_SUMMARY,
+  GET_MY_LIST,
+  GET_PUBLIC_LIST,
+  INIT_CURRENT_ITEM,
 } from "../actions/types";
 
 const initialState = {
-  selectedOne: null,
-  list: null,
+  selectedItem: null,
+  mylist: [],
+  publiclist: [],
+  isNew: false,
 };
 
 function summaryReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case INIT_CURRENT_ITEM:
+      return {
+        ...state,
+        selectedItem: null,
+        isNew: false,
+      };
     case SUMMARIZED_SUCCESS:
-    case GET_ALL_SUMMARIES:
-    case UPDATE_SUMMARY:
       return {
         ...state,
-        list: payload.data,
+        selectedItem: payload.data,
+        isNew: true,
       };
-    case GET_ONE_SUMMARY:
+    case GET_SUMMARY:
       return {
         ...state,
-        selectedOne: payload.data,
+        selectedItem: payload.data,
+        isNew: false,
       };
-    case SELECTED_SUMMARY:
+    case GET_MY_LIST:
       return {
         ...state,
-        selectedOne: payload,
+        mylist: payload.data,
+      };
+    case GET_PUBLIC_LIST:
+      return {
+        ...state,
+        publiclist: payload.data,
       };
     default:
       return state;

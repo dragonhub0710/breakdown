@@ -3,16 +3,16 @@ module.exports = (sequelize, Sequelize) => {
     title: {
       type: Sequelize.STRING,
     },
-    userId: {
-      type: Sequelize.STRING,
-    },
-    shareId: {
-      type: Sequelize.STRING,
-    },
-    transcription: {
+    content: {
       type: Sequelize.TEXT,
     },
-    content: {
+    userId: {
+      type: Sequelize.INTEGER,
+    },
+    isShared: {
+      type: Sequelize.BOOLEAN,
+    },
+    transcription: {
       type: Sequelize.TEXT,
     },
   });

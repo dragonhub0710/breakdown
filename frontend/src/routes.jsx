@@ -1,4 +1,4 @@
-import { Home, SignIn, SignUp, Layout, Summary } from "@/pages";
+import { Home, Layout, Summary, List } from "@/pages";
 
 export const routes = [
   {
@@ -10,16 +10,12 @@ export const routes = [
         element: <Home />,
       },
       {
-        path: "/summary/:id",
+        path: "/summary",
         element: <Summary />,
       },
       {
-        path: "/signin",
-        element: <SignIn />,
-      },
-      {
-        path: "/signup",
-        element: <SignUp />,
+        path: "/list",
+        element: <List />,
       },
     ],
   },

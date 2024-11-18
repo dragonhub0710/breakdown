@@ -41,7 +41,7 @@ const CountdownTimer = (props) => {
 
   return (
     <div>
-      <Typography className="text-xl font-normal lg:text-2xl">
+      <Typography className="text-2xl font-semibold text-white">
         {formatTimeLeft()}
       </Typography>
     </div>

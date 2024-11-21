@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Summary = sequelize.define("summary", {
+  const Breakdown = sequelize.define("breakdown", {
     title: {
       type: Sequelize.STRING,
     },
@@ -15,7 +15,13 @@ module.exports = (sequelize, Sequelize) => {
     transcription: {
       type: Sequelize.TEXT,
     },
+    shareId: {
+      type: Sequelize.STRING,
+    },
+    commenters: {
+      type: Sequelize.TEXT,
+    },
   });
 
-  return Summary;
+  return Breakdown;
 };

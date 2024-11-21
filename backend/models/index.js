@@ -19,6 +19,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("./user.model.js")(sequelize, Sequelize);
-db.summary = require("./summary.model.js")(sequelize, Sequelize);
-
+db.breakdown = require("./breakdown.model.js")(sequelize, Sequelize);
+db.feedback = require("./feedback.model.js")(sequelize, Sequelize);
 module.exports = db;

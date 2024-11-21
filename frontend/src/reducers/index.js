@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import auth from "./auth";
-import summary from "./summary";
+import breakdown from "./breakdown";
+import feedback from "./feedback";
 
 export default combineReducers({
   auth,
-  summary,
+  breakdown,
+  feedback,
 });

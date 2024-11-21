@@ -42,7 +42,11 @@ exports.signin = async (req, res) => {
     }
 
     const payload = {
-      user: row,
+      user: {
+        id: row.id,
+        username: row.username,
+        email: row.email,
+      },
     };
 
     jwt.sign(
@@ -66,7 +70,7 @@ exports.signup = async (req, res) => {
     return res.status(400).json({ message: errors.errors[0].msg });
   }
   try {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
     let row = await User.findOne({
       where: { email: email },
     });
@@ -77,12 +81,17 @@ exports.signup = async (req, res) => {
     let bcryptPwd = await bcrypt.hash(password, salt);
 
     const newRow = await User.create({
+      username: username,
       email: email,
       password: bcryptPwd,
     });
 
     const payload = {
-      user: newRow,
+      user: {
+        id: newRow.id,
+        username: newRow.username,
+        email: newRow.email,
+      },
     };
 
     jwt.sign(

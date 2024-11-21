@@ -8,5 +8,5 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Define article routes
 router.post("/", upload.single("file"), recordController.summarize);
-
+router.post("/update", upload.single("file"), recordController.update);
 module.exports = router;

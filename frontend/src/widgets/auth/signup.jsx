@@ -11,6 +11,8 @@ const SignUp = (props) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [emailRequired, setEmailRequired] = useState(false);
+  const [username, setUsername] = useState("");
+  const [usernameRequired, setUsernameRequired] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordShow, setPasswordShow] = useState(false);
   const [passwordRequired, setPasswordRequired] = useState(false);
@@ -46,6 +48,15 @@ const SignUp = (props) => {
     setEmail(e.target.value);
   };
 
+  const handleUsernameChange = (e) => {
+    if (e.target.value == "") {
+      setUsernameRequired(true);
+    } else {
+      setUsernameRequired(false);
+    }
+    setUsername(e.target.value);
+  };
+
   const handlePasswordChange = (e) => {
     if (e.target.value == "") {
       setPasswordRequired(true);
@@ -74,6 +85,10 @@ const SignUp = (props) => {
       setEmailRequired(true);
       return;
     }
+    if (username == "") {
+      setUsernameRequired(true);
+      return;
+    }
     if (password == "") {
       setPasswordRequired(true);
       return;
@@ -86,15 +101,16 @@ const SignUp = (props) => {
       setPwdMatchRequired(true);
       return;
     }
-    const data = { email, password };
+    const data = { email, username, password };
 
     setLoading(true);
     dispatch(signup(data))
       .then(() => {
         setEmail("");
+        setUsername("");
         setPassword("");
         setConfirmPassword("");
-        setOpenSignIn(false);
+        setOpenSignUp(false);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -103,9 +119,12 @@ const SignUp = (props) => {
   return (
     <div className="fixed left-0 top-0 z-40 flex h-full w-full items-center justify-center backdrop-blur-md">
       <div className="mx-auto flex w-[90vw] max-w-[400px] flex-col gap-3 rounded-lg border-[1px] border-[#D9D9D9] bg-white p-4">
-        <div onClick={handleClose} className="flex w-full justify-between">
+        <div
+          onClick={handleClose}
+          className="flex w-full cursor-pointer justify-between"
+        >
           <Typography className="text-2xl font-bold">Sign Up</Typography>
-          <Avatar src="img/close.svg" className="h-6 w-6" />
+          <Avatar src="/img/close.svg" className="h-6 w-6" />
         </div>
         <Typography className="text-base font-normal">
           You need an account to save and share breakdowns with your team
@@ -113,13 +132,31 @@ const SignUp = (props) => {
         <a href={`${import.meta.env.VITE_API_BASED_URL}/auth/google`}>
           <div className="relative flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border-[1px] border-[#D9D9D9]">
             <div className="absolute left-5 top-0 flex h-full w-4 items-center">
-              <Avatar src="img/google.svg" className="h-4 w-4" />
+              <Avatar src="/img/google.svg" className="h-4 w-4" />
             </div>
             <Typography className="text-base font-semibold">
               Continue with Google
             </Typography>
           </div>
         </a>
+        <div className="relative w-full">
+          <div className="h-[42px] w-full rounded-lg border-[1px] border-[#D9D9D9]">
+            <Input
+              value={username}
+              onChange={handleUsernameChange}
+              className="!border-none !text-base"
+              placeholder="Enter username"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+          </div>
+          {usernameRequired && (
+            <Typography color="red" className="text-sm font-normal">
+              *This field is required
+            </Typography>
+          )}
+        </div>
         <div className="relative w-full">
           <div className="h-[42px] w-full rounded-lg border-[1px] border-[#D9D9D9]">
             <Input

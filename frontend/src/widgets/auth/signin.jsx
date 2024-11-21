@@ -74,9 +74,12 @@ const SignIn = (props) => {
   return (
     <div className="fixed left-0 top-0 z-40 flex h-full w-full items-center justify-center backdrop-blur-md">
       <div className="mx-auto flex w-[90vw] max-w-[400px] flex-col gap-3 rounded-lg border-[1px] border-[#D9D9D9] bg-white p-4">
-        <div onClick={handleClose} className="flex w-full justify-between">
+        <div
+          onClick={handleClose}
+          className="flex w-full cursor-pointer justify-between"
+        >
           <Typography className="text-2xl font-bold">Sign In</Typography>
-          <Avatar src="img/close.svg" className="h-6 w-6" />
+          <Avatar src="/img/close.svg" className="h-6 w-6" />
         </div>
         <Typography className="text-base font-normal">
           Sign in to save and share breakdowns with your team
@@ -84,7 +87,7 @@ const SignIn = (props) => {
         <a href={`${import.meta.env.VITE_API_BASED_URL}/auth/google`}>
           <div className="relative flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border-[1px] border-[#D9D9D9]">
             <div className="absolute left-5 top-0 flex h-full w-4 items-center">
-              <Avatar src="img/google.svg" className="h-4 w-4" />
+              <Avatar src="/img/google.svg" className="h-4 w-4" />
             </div>
             <Typography className="text-base font-semibold">
               Continue with Google
@@ -96,7 +99,7 @@ const SignIn = (props) => {
             <Input
               value={email}
               onChange={handleEmailChange}
-              className="!border-none !text-base"
+              className="!border-none !text-base !text-black"
               placeholder="Enter email"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -115,7 +118,7 @@ const SignIn = (props) => {
               value={password}
               type={passwordShow ? "text" : "password"}
               onChange={handlePasswordChange}
-              className="!border-none !text-base"
+              className="!border-none !text-base !text-black"
               placeholder="Enter password"
               labelProps={{
                 className: "before:content-none after:content-none",

@@ -97,7 +97,8 @@ app.get(
 );
 
 // Define Routes
-app.use("/api/summary", require("./routers/summary.router"));
+app.use("/api/breakdown", require("./routers/breakdown.router"));
+app.use("/api/feedback", require("./routers/feedback.router"));
 app.use("/api/record", require("./routers/record.router"));
 app.use("/api/auth", require("./routers/auth.router"));
 

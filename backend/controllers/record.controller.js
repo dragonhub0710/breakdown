@@ -1,5 +1,7 @@
 const { createClient } = require("@deepgram/sdk");
 const OpenAI = require("openai");
+const db = require("../models");
+const Breakdown = db.breakdown;
 require("dotenv").config();
 
 const openai = new OpenAI({
@@ -8,15 +10,42 @@ const openai = new OpenAI({
 
 exports.summarize = async (req, res) => {
   try {
-    const { originalText = "" } = req.body;
+    const { originalText = "", type = "breakdown" } = req.body;
     const file = req.file;
 
     let transcription = await getTranscription(file.buffer);
-
-    let data = await getSummary(originalText + "\n\n" + transcription);
-    data.transcription = originalText + "\n\n" + transcription;
-
+    let data = {
+      transcription,
+    };
+    if (type == "breakdown") {
+      let response = await getSummary(originalText + "\n\n" + transcription);
+      data.content = response.content;
+      data.title = response.title;
+    }
     res.status(200).json({ data });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.update = async (req, res) => {
+  try {
+    const { originalText = "", id } = req.body;
+    const file = req.file;
+
+    let transcription = await getTranscription(file.buffer);
+    let data = {
+      transcription,
+    };
+    let response = await getSummary(originalText + "\n\n" + transcription);
+    data.content = response.content;
+    data.title = response.title;
+
+    await Breakdown.update(data, { where: { id } });
+    const row = await Breakdown.findOne({ where: { id } });
+
+    res.status(200).json({ data: row });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ message: "Internal server error" });

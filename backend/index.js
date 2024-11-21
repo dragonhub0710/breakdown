@@ -56,8 +56,7 @@ passport.use(
       let bcryptPwd = await bcrypt.hash(profile.id, salt);
       if (!row) {
         row = await User.create({
-          firstname: profile.name.givenName,
-          lastname: profile.name.familyName,
+          username: profile.name.givenName,
           email: profile.emails[0].value,
           password: bcryptPwd,
         });

@@ -97,7 +97,7 @@ const Feedback = (props) => {
   };
 
   return (
-    <div className="fixed left-0 top-0 z-40 flex h-full w-full flex-col bg-white">
+    <div className="fixed left-0 top-0 z-40 h-screen w-full bg-white">
       {showToast && (
         <div className="fixed bottom-4 left-0 z-50 flex w-full justify-center">
           <Alert className="w-fit bg-black text-white">
@@ -105,96 +105,79 @@ const Feedback = (props) => {
           </Alert>
         </div>
       )}
-      {auth.isAuthenticated ? (
-        <div className="flex w-full justify-between gap-3 bg-white p-4">
-          <div
+      <div className="relative flex h-full w-full flex-col justify-between gap-3 bg-white">
+        <div className="mx-auto h-full w-full max-w-[450px] overflow-y-auto p-4 pb-[100px]">
+          <Typography className="mt-10 text-3xl font-bold">Feedback</Typography>
+          {feedbackList &&
+            feedbackList.length > 0 &&
+            feedbackList.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`flex flex-col gap-3 ${
+                    index != feedbackList.length - 1 &&
+                    "border-b-[1px] border-b-[#D5D5D5]"
+                  } py-4`}
+                >
+                  <div className="my-2 flex items-center gap-2">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#9599FF] text-xl font-bold capitalize">
+                      {item.username[0]}
+                    </div>
+                    <Typography className="mx-4 text-xl font-bold capitalize">
+                      {item.username}
+                    </Typography>
+                  </div>
+                  <Typography className="text-base font-normal">
+                    {item.content}
+                  </Typography>
+                  <div className="flex w-full gap-4">
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleRemove(item.id || -1, item.userId)}
+                      className="flex h-10 items-center justify-center gap-2 border-[1px] border-[#D5D5D5] px-3 py-0 text-base font-semibold text-black"
+                    >
+                      <Avatar
+                        src="/img/trash.svg"
+                        className="h-4 w-auto rounded-none"
+                      />
+                      <Typography className="text-base font-semibold normal-case">
+                        Remove
+                      </Typography>
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      disabled={item.isApproved}
+                      onClick={() => handleApprove(item.id || -1)}
+                      className="flex h-10 items-center justify-center gap-2 border-[1px] border-[#D5D5D5] px-3 py-0 text-base font-semibold text-black"
+                    >
+                      <Avatar
+                        src="/img/check.svg"
+                        className="h-auto w-6 rounded-none"
+                      />
+                      <Typography className="text-base font-semibold normal-case">
+                        Approve
+                      </Typography>
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+        <div className="absolute bottom-0 flex w-full justify-center gap-3 border-t-[1px] bg-white px-10 py-7">
+          <Button
+            variant="outlined"
+            className="flex w-full justify-center gap-6 border-[1px] border-[#D5D5D5] text-center"
             onClick={handleGoBack}
-            className="relative flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border-[1px] border-[#D5D5D5]"
           >
             <Avatar
-              src="/img/back.svg"
-              className="absolute left-4 h-4 w-auto"
+              src="/img/backward-arrow.svg"
+              className="h-4 w-auto rounded-none"
             />
-            <Typography className="ml-4 text-base font-semibold">
-              Back to Breakdown
+            <Typography className="text-sm font-semibold normal-case text-black">
+              Back to breakdown
             </Typography>
-          </div>
+          </Button>
         </div>
-      ) : (
-        <div className="flex w-full justify-between gap-3 bg-white p-4">
-          <div
-            onClick={handleGoBack}
-            className="flex h-10 w-44 cursor-pointer items-center justify-center rounded-lg border-[1px] border-[#D5D5D5]"
-          >
-            <Avatar src="/img/back.svg" className="h-4 w-auto" />
-            <Typography className="ml-4 text-base font-semibold">
-              Back
-            </Typography>
-          </div>
-          <div
-            onClick={handleGoSignIn}
-            className="flex h-10 w-44 cursor-pointer items-center justify-center rounded-lg border-[1px] border-[#D5D5D5]"
-          >
-            <Typography className="text-base font-semibold">Sign In</Typography>
-          </div>
-        </div>
-      )}
-      <div className="mx-auto h-full max-h-[calc(100vh-45px)] w-full max-w-[450px] overflow-y-auto p-4">
-        <Typography className="mb-4 text-3xl font-bold">Feedback</Typography>
-        {feedbackList &&
-          feedbackList.length > 0 &&
-          feedbackList.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={`flex flex-col gap-3 ${
-                  index != feedbackList.length - 1 &&
-                  "border-b-[1px] border-b-[#D5D5D5]"
-                } py-4`}
-              >
-                <div className="my-2 flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#9599FF] text-xl font-bold capitalize">
-                    {item.username[0]}
-                  </div>
-                  <Typography className="mx-4 text-xl font-bold capitalize">
-                    {item.username}
-                  </Typography>
-                </div>
-                <Typography className="text-base font-normal">
-                  {item.content}
-                </Typography>
-                <div className="flex w-full gap-4">
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleRemove(item.id || -1, item.userId)}
-                    className="flex h-10 items-center justify-center gap-2 border-[1px] border-[#D5D5D5] px-3 py-0 text-base font-semibold text-black"
-                  >
-                    <Avatar
-                      src="/img/trash.svg"
-                      className="h-4 w-auto rounded-none"
-                    />
-                    <Typography className="text-base font-semibold normal-case">
-                      Remove
-                    </Typography>
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    disabled={item.isApproved}
-                    onClick={() => handleApprove(item.id || -1)}
-                    className="flex h-10 items-center justify-center gap-2 border-[1px] border-[#D5D5D5] px-3 py-0 text-base font-semibold text-black"
-                  >
-                    <Avatar
-                      src="/img/check.svg"
-                      className="h-auto w-6 rounded-none"
-                    />
-                    <Typography className="text-base font-semibold normal-case">
-                      Approve
-                    </Typography>
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
       </div>
     </div>
   );

@@ -33,6 +33,7 @@ export function Breakdown() {
   const [isChecked, setIsChecked] = useState(false);
   const [isFeedback, setIsFeedback] = useState(false);
   const [overCommenters, setOverCommenters] = useState(0);
+  const [isCopyDone, setIsCopyDone] = useState(false);
   const auth = useSelector((state) => state.auth);
   const breakdown = useSelector((state) => state.breakdown);
   const feedback = useSelector((state) => state.feedback);
@@ -62,14 +63,12 @@ export function Breakdown() {
   useEffect(() => {
     if (id != "new") {
       dispatch(getOneBreakdown({ shareId: id }));
+    } else {
+      if (!breakdown.selectedBD) {
+        navigate("/recording");
+      }
     }
   }, [auth.isAuthenticated]);
-
-  useEffect(() => {
-    if (isFeedback && feedback.newFeedback != "") {
-      setShowFeedbackModal(true);
-    }
-  }, [feedback.newFeedback, isFeedback]);
 
   const handleGoBreakdowns = () => {
     if (id == "new" && !breakdown.selectedBD.id) {
@@ -117,29 +116,49 @@ export function Breakdown() {
     }
   };
 
-  const handleGoBackConfirm = () => {
-    if (isChecked) {
-      localStorage.setItem("hideModalFlag", true);
-    }
-    dispatch(initCurrentBreakdown());
-    navigate("/");
-  };
-
-  const handleCheckbox = (e) => {
-    setIsChecked(e.target.checked);
-  };
-
   const handleFeedback = () => {
     if (auth.isAuthenticated && auth.user.id == breakdown.selectedBD.userId) {
       setShowFeedbackModal(true);
     }
   };
 
+  const handleCopyText = () => {
+    const extractedText = extractTextFromContent(breakdown.selectedBD.content);
+    navigator.clipboard.writeText(extractedText);
+    setIsCopyDone(true);
+    setTimeout(() => {
+      setIsCopyDone(false);
+    }, 2000);
+  };
+
+  const extractTextFromContent = (content) => {
+    // Create a temporary DOM element
+    const tempElement = document.createElement("div");
+
+    // Set the inner HTML of the temporary element
+    tempElement.innerHTML = content;
+
+    // Extract the text content
+    const extractedText = tempElement.textContent || tempElement.innerText;
+
+    return extractedText;
+  };
+
   return (
     <>
       <div className="mx-auto flex h-full min-h-screen w-full max-w-[450px] flex-col">
-        <div className="fixed left-0 top-0 w-full">
-          {auth.isAuthenticated ? (
+        <div className="fixed left-0 top-0 flex w-full justify-end bg-white p-4">
+          <Button
+            variant="outlined"
+            onClick={handleCopyText}
+            className={`flex h-9 items-center justify-center gap-1 border-[1px] border-[#D4D4D4] px-3 text-sm font-medium normal-case text-black ${
+              isCopyDone ? "bg-[#0000001F]" : "bg-[white]"
+            }`}
+          >
+            <Avatar src="/img/copy.svg" className="h-3 w-auto rounded-none" />
+            {isCopyDone ? "Copied!" : "Copy"}
+          </Button>
+          {/* {auth.isAuthenticated ? (
             <div className="flex w-full justify-between gap-3 bg-white p-4">
               <Button
                 variant="outlined"
@@ -183,15 +202,17 @@ export function Breakdown() {
                 </Typography>
               </div>
             </div>
-          )}
+          )} */}
         </div>
 
-        <div className="flex h-full flex-col items-center overflow-y-auto p-4 pt-20">
+        <div className="flex h-full flex-col items-center overflow-y-auto p-4 pb-40 pt-16">
           {breakdown.selectedBD && (
             <>
-              <Typography className="text-2xl font-bold">
-                {breakdown.selectedBD.title}
-              </Typography>
+              <div className="w-full">
+                <Typography className="text-start text-2xl font-bold">
+                  {breakdown.selectedBD.title}
+                </Typography>
+              </div>
               <div
                 onClick={handleFeedback}
                 className={`my-2 flex h-8 w-full cursor-pointer items-center px-2 ${
@@ -229,57 +250,12 @@ export function Breakdown() {
           )}
         </div>
       </div>
-      <div
-        className={`${
-          breakdown.selectedBD &&
-          breakdown.selectedBD.isShared &&
-          id == "new" &&
-          "hidden"
-        }`}
-      >
-        <Recorder
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          isFeedback={isFeedback}
-        />
-      </div>
-      <Dialog
-        open={showRemoveModal}
-        handler={setShowRemoveModal}
-        className="!min-w-[90vw]"
-      >
-        <DialogHeader>
-          <Typography variant="h4" className="mt-5 w-full text-center">
-            Lose Your Breakdown?
-          </Typography>
-        </DialogHeader>
-        <DialogBody>
-          <div className="mb-2 h-full w-full rounded-lg px-3">
-            <Typography className="w-full text-black">
-              If you go back without signing up, your current breakdown will be
-              lost. Sign up now to save it
-            </Typography>
-          </div>
-          <div className="my-2 w-full">
-            <Checkbox label="Don’t show this again" onChange={handleCheckbox} />
-          </div>
-          <div className="my-2 flex w-full justify-end gap-3">
-            <Button
-              onClick={handleGoBackConfirm}
-              variant="outlined"
-              className="flex h-10 w-[100px] items-center justify-center border-black p-0 text-base normal-case text-black shadow-none hover:shadow-none"
-            >
-              Go back
-            </Button>
-            <Button
-              onClick={handleGoSignIn}
-              className="flex h-10 w-[100px] items-center justify-center bg-[#D31510] p-0 text-base normal-case text-white shadow-none hover:shadow-none"
-            >
-              Sign In
-            </Button>
-          </div>
-        </DialogBody>
-      </Dialog>
+      <Recorder
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        isFeedback={isFeedback}
+      />
+
       {showSignInModal && (
         <SignIn
           setOpenSignUp={setShowSignUpModal}

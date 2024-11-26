@@ -164,16 +164,21 @@ export function Home() {
                           +{item.commenters.length - 5}
                         </div>
                       )}
-                      <div
-                        onClick={(e) => handleCopyLink(item.shareId, e)}
-                        className=" flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-[1px] border-dotted border-[black] bg-[white] text-sm font-bold text-[black]"
-                      >
-                        <Avatar src="/img/share.svg" className="h-4 w-4" />
-                      </div>
                     </div>
                   </div>
-                  <div onClick={(e) => handleShowRemoveModal(item.id, e)}>
-                    <Avatar src="/img/trash.svg" className="h-5 w-auto" />
+                  <div className="flex gap-3">
+                    <div
+                      className="cursor-pointer"
+                      onClick={(e) => handleCopyLink(item.shareId, e)}
+                    >
+                      <Avatar src="/img/share.svg" className="h-5 w-auto" />
+                    </div>
+                    <div
+                      className="cursor-pointer"
+                      onClick={(e) => handleShowRemoveModal(item.id, e)}
+                    >
+                      <Avatar src="/img/trash.svg" className="h-5 w-auto" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -229,7 +234,7 @@ export function Home() {
                 <Avatar src="/img/mic.svg" className="h-5 w-auto" />
               </div>
               <Typography className="text-[32px] font-black tracking-tighter text-[#1F2122]">
-                BREAKDOWNS
+                BREAKDOWN
               </Typography>
               <Menu placement="top-end">
                 <MenuHandler>

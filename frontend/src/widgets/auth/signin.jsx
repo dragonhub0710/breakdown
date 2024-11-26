@@ -71,6 +71,12 @@ const SignIn = (props) => {
       .catch(() => setLoading(false));
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="fixed left-0 top-0 z-40 flex h-full w-full items-center justify-center backdrop-blur-md">
       <div className="mx-auto flex w-[90vw] max-w-[400px] flex-col gap-3 rounded-lg border-[1px] border-[#D9D9D9] bg-white p-4">
@@ -99,6 +105,7 @@ const SignIn = (props) => {
             <Input
               value={email}
               onChange={handleEmailChange}
+              onKeyDown={handleKeyDown}
               className="!border-none !text-base !text-black"
               placeholder="Enter email"
               labelProps={{
@@ -118,6 +125,7 @@ const SignIn = (props) => {
               value={password}
               type={passwordShow ? "text" : "password"}
               onChange={handlePasswordChange}
+              onKeyDown={handleKeyDown}
               className="!border-none !text-base !text-black"
               placeholder="Enter password"
               labelProps={{

@@ -16,3 +16,7 @@
   border-radius: 10px;
   cursor: default;
 }
+
+.voice-animation {
+  transition: transform 1s ease-in-out;
+}

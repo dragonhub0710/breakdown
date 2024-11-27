@@ -166,7 +166,7 @@ export function Home() {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-6">
                     <div
                       className="cursor-pointer"
                       onClick={(e) => handleCopyLink(item.shareId, e)}
